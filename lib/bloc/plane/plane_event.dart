@@ -1,17 +1,16 @@
 part of 'plane_bloc.dart';
 
 abstract class PlaneEvent extends Equatable {
-  const PlaneEvent();
+  final double cellSize;
+
+  const PlaneEvent(this.cellSize);
 
   @override
   List<Object> get props => [];
 }
 
 class StartScaling extends PlaneEvent {
-  final int cellSize;
-
-  const StartScaling({@required this.cellSize});
-
+  const StartScaling({@required double cellSize}) : super(cellSize);
 
   @override
   List<Object> get props => [cellSize];
@@ -22,10 +21,20 @@ class StartScaling extends PlaneEvent {
   }
 }
 
-class StopScaling extends PlaneEvent {
-  final int cellSize;
+class Scaling extends PlaneEvent {
+  const Scaling({@required double cellSize}) : super(cellSize);
 
-  const StopScaling({@required this.cellSize});
+  @override
+  List<Object> get props => [cellSize];
+
+  @override
+  String toString() {
+    return "Scaling { cellSize: $cellSize }";
+  }
+}
+
+class StopScaling extends PlaneEvent {
+  const StopScaling({@required double cellSize}) : super(cellSize);
 
   @override
   List<Object> get props => [cellSize];

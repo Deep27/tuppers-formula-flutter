@@ -8,14 +8,14 @@ part 'plane_event.dart';
 part 'plane_state.dart';
 
 class PlaneBloc extends Bloc<PlaneEvent, PlaneState> {
-  final int _cellSize;
+  final double _cellSize;
 
-  PlaneBloc({@required int cellSize})
+  PlaneBloc({@required double cellSize})
       : assert(cellSize > 0),
         _cellSize = cellSize;
 
   @override
-  PlaneState get initialState => Still(_cellSize);
+  PlaneState get initialState => StillState(_cellSize);
 
   @override
   Stream<PlaneState> mapEventToState(
@@ -31,15 +31,15 @@ class PlaneBloc extends Bloc<PlaneEvent, PlaneState> {
   }
 
   @override
-  Future<int> close() {
+  Future<double> close() {
     return super.close();
   }
 
   Stream<PlaneState> _mapStartScalingToState(StartScaling startScaling) async* {
-    yield Scaling(startScaling.cellSize);
+    yield ScalingState(startScaling.cellSize);
   }
 
   Stream<PlaneState> _mapStopScalingToState(StopScaling stopScaling) async* {
-    yield Still(stopScaling.cellSize);
+    yield StillState(stopScaling.cellSize);
   }
 }
