@@ -18,20 +18,19 @@ class _PlaneWidgetState extends State<PlaneWidget> {
 
     return GestureDetector(
       onScaleUpdate: (scaleDetails) => _updatePlaneScale(scaleDetails.scale),
-      child: Container(
-        child: Transform.scale(
-          scale: _planeScale,
-          alignment: FractionalOffset.topCenter,
-          origin: Offset(50.0, 50.0),
-          child: GridView.count(
-            crossAxisCount: horizontalCellsAmount,
-            children: <Widget>[
-              ...List.generate(
-                horizontalCellsAmount * verticalCellsAmount,
-                (i) => CellWidget(cellSize),
-              ),
-            ],
-          ),
+      child: Transform.scale(
+        scale: _planeScale,
+        alignment: FractionalOffset.topCenter,
+        origin: Offset(50.0, 50.0),
+        child: GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: horizontalCellsAmount,
+          children: <Widget>[
+            ...List.generate(
+              horizontalCellsAmount * verticalCellsAmount,
+              (i) => CellWidget(cellSize),
+            ),
+          ],
         ),
       ),
     );

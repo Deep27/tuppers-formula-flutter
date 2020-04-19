@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuppers_formula/widgets/drawed_plane_widget.dart';
 
 import '../widgets/plane/plane_widget.dart';
 
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(widget._title),
       ),
-      body: PlaneWidget(),
+      body: DrawedPlaneWidget(),
     );
   }
 }
