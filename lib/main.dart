@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuppers_formula/widgets/gesture_test_widget.dart';
 
 import './screens/home_screen.dart';
 
@@ -14,8 +15,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(title: PROJECT_NAME),
+      home: Scaffold(
+        body: Center(
+          child: GestureTestWidget(),
+        ),
+      ),
     );
   }
 }
-
