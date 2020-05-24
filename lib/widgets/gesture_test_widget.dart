@@ -11,8 +11,10 @@ class GestureTestWidget extends StatefulWidget {
 }
 
 class _GestureTestWidgetState extends State<GestureTestWidget> {
+  final field = TuppersField();
 
   Matrix4 _transformMatrix = Matrix4.identity();
+  Matrix4 _secondTransformMatrix = Matrix4.identity();
 
   final _ValueUpdater<double> _scaleUpdater =
       _ValueUpdater((oldValue, newValue) => newValue / oldValue);
@@ -29,7 +31,6 @@ class _GestureTestWidgetState extends State<GestureTestWidget> {
       },
       onScaleUpdate: (details) {
         setState(() {
-
           Offset translationDelta =
               _translationUpdater.update(details.focalPoint);
           Matrix4 translationDeltaMatrix = _translate(translationDelta);
@@ -44,25 +45,99 @@ class _GestureTestWidgetState extends State<GestureTestWidget> {
           }
         });
       },
+      child: TuppersField(),
+//      child: Container(
+//        color: Colors.black,
+//        height: 250,
+//        width: 300,
+//        child: Transform(
+//          alignment: Alignment.topRight,
+//          transform: _transformMatrix,
+//          child: Container(
+//            padding: const EdgeInsets.all(8.0),
+//            color: const Color(0xFFE8581C),
+//            child: Center(
+//              child: const Text(
+//                'Drag or Zoom in/out',
+//                style: TextStyle(fontSize: 50),
+//              ),
+//            ),
+//          ),
+//        ),
+//      ),
+    );
+  }
+}
+
+class TuppersField extends StatefulWidget {
+  @override
+  _TuppersFieldState createState() => _TuppersFieldState();
+}
+
+class _TuppersFieldState extends State<TuppersField> {
+  // 106 x 17
+  final tuppersArray = List.generate(
+    17,
+    (index) => List<bool>.generate(
+      106,
+      (j) {
+        final r = math.Random();
+        return r.nextBool();
+      },
+      growable: false,
+    ),
+    growable: false,
+  );
+
+  Widget _buildGridItems(BuildContext context, int index) {
+    int tuppersGridLength = tuppersArray.length;
+    int x, y = 0;
+    x = (index / tuppersGridLength).floor();
+    y = (index % tuppersGridLength);
+    return GridTile(
       child: Container(
-        color: Colors.black,
-        height: 300,
-        width: 400,
-        child: Transform(
-          alignment: Alignment.topRight,
-          transform: _transformMatrix,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black,
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: _buildGridItem(x, y),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridItem(int x, int y) {
+    final color = tuppersArray[y][x] ? Colors.blue : Colors.white;
+    return Container(color: color);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 1.0,
           child: Container(
-            padding: const EdgeInsets.all(8.0),
-            color: const Color(0xFFE8581C),
-            child: Center(
-              child: const Text(
-                'Apartment for rent!',
-                style: TextStyle(fontSize: 50),
+            padding: const EdgeInsets.all(1.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 2.0,
               ),
+            ),
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 106,
+              ),
+              itemBuilder: _buildGridItems,
+              itemCount: 106 * 17,
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -111,26 +186,3 @@ class _ValueUpdater<T> {
     return updated;
   }
 }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      width: double.infinity,
-//      height: double.infinity,
-//      child: MatrixGestureDetector(
-//        onMatrixUpdate: (Matrix4 m, Matrix4 tm, Matrix4 sm, Matrix4 rm) {
-//          setState(() {
-//            matrix = m;
-//          });
-//        },
-//        child: Transform(
-//          transform: matrix,
-//          child: Container(
-//            width: 200,
-//            height: 200,
-//            color: Colors.red,
-//          ),
-//        ),
-//      ),
-//    );
-//  }
